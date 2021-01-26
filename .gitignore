@@ -1,0 +1,5 @@
+.vscode
+.certbot
+/data/
+
+conf.mk
