@@ -1,6 +1,7 @@
 import json
 import re
 import requests
+import sys
 import time
 
 def get_rom_by_id_alt(id):
@@ -57,7 +58,7 @@ def get_game_list():
     ctx = ctx[ctx.find('columns max-22-columns'):]
     return list(re.findall(r'<a href="(https://nxbrew.com/.*?)">', ctx))
 
-if __name__ == '__main__':
+def run(f):
     games = get_game_list()
 
     ok = False
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     n = 0
     for game in games:
         n = n + 1
-        if game == 'https://nxbrew.com/bioshock-infinite-the-complete-edition-switch-nsp-eshop/':
+        if game == 'https://nxbrew.com/cake-bash-switch-nsp-update-eshop/':
             ok = True
         if not ok:
             continue
@@ -78,14 +79,18 @@ if __name__ == '__main__':
 
         link_id = list(re.findall(r'href="http://1link.club/(.*?)"', dl_ctx))
 
-        print(f'[{n}/{len(games)}] {name}')
-        print(f'{game}')
-        print(f'{link_id}', flush=True)
+        print(f'[{n}/{len(games)}] {name}', file=f)
+        print(f'{game}', file=f)
+        print(f'{link_id}', file=f, flush=True)
 
         for id in link_id:
             try:
-                print(f'    {get_rom_by_id(id)}', flush=True)
+                print(f'    {get_rom_by_id(id)}', file=f, flush=True)
             except:
-                print(f'    {get_rom_by_id_alt(id)}', flush=True)
+                print(f'    {get_rom_by_id_alt(id)}', file=f, flush=True)
 
-        print()
+        print(file=f)
+
+if __name__ == '__main__':
+    with open(sys.argv[1], 'a', encoding='utf-16') as f:
+        run(f)
