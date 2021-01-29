@@ -55,6 +55,8 @@ def get_game_list():
 
 if __name__ == '__main__':
     games = get_game_list()
+
+    n = 0
     for game in games:
         ctx = requests.get(game).content.decode("utf-8")
 
@@ -64,7 +66,8 @@ if __name__ == '__main__':
 
         category = list(re.findall(r'has-medium-font-size"><strong>(.*?)</strong></p>', dl_ctx))
 
-        print(f'{name} [{game}]')
+        n = n + 1
+        print(f'[{n}/{len(games)}] {name} [ {game} ]')
         for x in range(len(category)):
             if x == len(category)-1:
                 c = dl_ctx[dl_ctx.find(category[x]):-1]
