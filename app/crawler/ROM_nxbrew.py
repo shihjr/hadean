@@ -86,12 +86,12 @@ if __name__ == '__main__':
             _gd = list(filter(lambda a: a.find('drive.google.com/') >= 0, link))
             if len(_1fichier) > 0:
                 for k in _1fichier:
-                    print(f'        {k}:')
+                    print(f'        {k}')
             elif len(_mega) > 0:
                 for k in _mega:
-                    print(f'        {k}:')
+                    print(f'        {k}')
             elif len(_gd) > 0:
                 for k in _gd:
-                    print(f'        {k}:')
+                    print(f'        {k}')
 
         print('#'*80, flush=True)
