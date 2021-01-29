@@ -64,34 +64,18 @@ if __name__ == '__main__':
 
         dl_ctx = ctx[ctx.find('Download Links'):ctx.find('Please report the broken')]
 
-        category = list(re.findall(r'has-medium-font-size"><strong>(.*?)</strong></p>', dl_ctx))
+        link_id = list(re.findall(r'href="http://1link.club/(.*?)"', dl_ctx))
 
         n = n + 1
-        print(f'[{n}/{len(games)}] {name} [ {game} ]', flush=True)
-        for x in range(len(category)):
-            if x == len(category)-1:
-                c = dl_ctx[dl_ctx.find(category[x]):-1]
-            else:
-                c = dl_ctx[dl_ctx.find(category[x]):dl_ctx.find(category[x+1])]
+        print(f'[{n}/{len(games)}] {name}')
+        print(f'{game}')
+        print(f'{link_id}', flush=True)
 
-            link_id = list(re.findall(r'href="http://1link.club/(.*?)"', c))
-            link = []
-            for id in link_id:
-                link.append(get_rom_by_id(id))
+        link = []
+        for id in link_id:
+            link.append(get_rom_by_id(id))
 
-            print(f'    {category[x]}:')
+        for k in link:
+            print(f'    {k}')
 
-            _1fichier = list(filter(lambda a: a.find('1fichier.com/') >= 0, link))
-            _mega = list(filter(lambda a: a.find('mega.nz/') >= 0, link))
-            _gd = list(filter(lambda a: a.find('drive.google.com/') >= 0, link))
-            if len(_1fichier) > 0:
-                for k in _1fichier:
-                    print(f'        {k}')
-            elif len(_mega) > 0:
-                for k in _mega:
-                    print(f'        {k}')
-            elif len(_gd) > 0:
-                for k in _gd:
-                    print(f'        {k}')
-
-        print('#'*80)
+        print()
