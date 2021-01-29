@@ -67,7 +67,7 @@ if __name__ == '__main__':
         category = list(re.findall(r'has-medium-font-size"><strong>(.*?)</strong></p>', dl_ctx))
 
         n = n + 1
-        print(f'[{n}/{len(games)}] {name} [ {game} ]')
+        print(f'[{n}/{len(games)}] {name} [ {game} ]', flush=True)
         for x in range(len(category)):
             if x == len(category)-1:
                 c = dl_ctx[dl_ctx.find(category[x]):-1]
@@ -94,4 +94,4 @@ if __name__ == '__main__':
                 for k in _gd:
                     print(f'        {k}')
 
-        print('#'*80, flush=True)
+        print('#'*80)
