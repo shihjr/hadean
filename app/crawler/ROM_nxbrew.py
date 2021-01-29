@@ -3,6 +3,10 @@ import re
 import requests
 import time
 
+def get_rom_by_id_alt(id):
+    ctx = requests.get(f'https://1link.club/m1.php?id={id}').content.decode("utf-8")
+    return re.findall(r'id="download" href="(.*?)"', ctx)[0]
+
 def get_rom_by_id(id):
     ctx = requests.get(f'https://1link.club/m1.php?id={id}').content.decode("utf-8")
     url = re.findall(r'"(https?://cutdl.xyz/.*?)"', ctx)[0]
@@ -56,8 +60,16 @@ def get_game_list():
 if __name__ == '__main__':
     games = get_game_list()
 
+    ok = False
+
     n = 0
     for game in games:
+        n = n + 1
+        if game == 'https://nxbrew.com/bioshock-infinite-the-complete-edition-switch-nsp-eshop/':
+            ok = True
+        if not ok:
+            continue
+
         ctx = requests.get(game).content.decode("utf-8")
 
         name = re.findall(r'<title>(.*?) \|.*?</title>', ctx)[0]
@@ -66,16 +78,14 @@ if __name__ == '__main__':
 
         link_id = list(re.findall(r'href="http://1link.club/(.*?)"', dl_ctx))
 
-        n = n + 1
         print(f'[{n}/{len(games)}] {name}')
         print(f'{game}')
         print(f'{link_id}', flush=True)
 
-        link = []
         for id in link_id:
-            link.append(get_rom_by_id(id))
-
-        for k in link:
-            print(f'    {k}')
+            try:
+                print(f'    {get_rom_by_id(id)}', flush=True)
+            except:
+                print(f'    {get_rom_by_id_alt(id)}', flush=True)
 
         print()
